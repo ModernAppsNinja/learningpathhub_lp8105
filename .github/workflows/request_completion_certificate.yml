@@ -3,27 +3,30 @@ on:
   pull_request_target:
     types: [opened]
     paths:
-    - 'static/admin/userdata/certs_awarded/**.yml'
+    - 'static/admin/userdata/learningpaths/vSphereTanzuLearningPath/courses/**.yml'
 
-# job: validate completed test count is equal to total test count
-  # extract pr file body from pr event
-  # curl answer key directory and create envar total_test_count to verify total quantity of tests required, as there is an answer key for each test
-  # curl grade stub directory and create envar completed_test_count to verify total quantity of completed tests
-  # verify that total and completed test count values are the same
-# job: calculate grade, create certificate, post records
-  # compute total quantity of questions for all tests as envar combined_total_questions
-  # compute total quantity of correct answers for all tests as envar combined_total_correct_questions
-  # prepare final grade report
-  # post final grade report
-  # pull member course card assets
-  # prepare updated member course card
-  # post updated member course card
-  # post message to PR
-  # merge PR
-  
-  # update registered members directory with status: [completed](url to cert)
-  # create certificate?
-  # ?post cert to social media?
+# job: validate member records for learning path course completion and if pass, assign digital badge and append cert card to member record site
+  # set complete_course_count=0
+  # curl learning path courses directory to pull list of courses in learning path
+  # set total_course_count=(total number of courses in learning path per curl above)
+  # loop through each course name while complete_course_count -lt total_course_count
+    # curl member repo certs directory to determine if each {courseName}.md file is present for each required course
+    # if present, complete_course_count=((complete_course_count + 1))
+  # if complete_course_count == total_course_count
+    # set envar lp_complete=true
+   # else
+    # set envar lp_complete=false
+  # if lp_complete=true
+    # approve merge
+    # replace merged file with github metadata based equivalent
+    # provision digital cert
+    # post cert card to member repo
+    # post message to pr
+  # if lp_complete=false
+    # post message to pr
+    # close pr
+
+    
 
 jobs:
   job_verify_test_completion:
